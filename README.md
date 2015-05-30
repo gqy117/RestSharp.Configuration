@@ -1,9 +1,12 @@
 # RestSharp.Configuration
-Read request information from a **har** file, and create a new **RestRequest**();
+Read request information from a **har** file, and create a new **RestRequest**().
+
+So that we can login to some web pages without writing **Request.AddParameter()** over and over.
 
 # Steps: #
 
-## 1. Save a real request from Chrome as HAR format.## 
+## 1. Get a Har file  
+Save a real request from Chrome as HAR format.
 
 ## 2. Write the following code ##
 RestClient restClient = new RestClient("https://www.yourUrl.com");
