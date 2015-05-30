@@ -16,6 +16,8 @@
 
         public IList<Parameter> QueryString { get; set; }
 
+        public IList<Parameter> Cookies { get; set; }
+
         public PostData PostData { get; set; }
     }
 }

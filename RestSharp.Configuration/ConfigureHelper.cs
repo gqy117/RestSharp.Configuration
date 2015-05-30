@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Text;
     using System.Threading.Tasks;
     using System.Web;
@@ -17,9 +18,19 @@
             "Connection"
         };
 
-        public static IList<RestRequest> SetConfigure(string configFile)
+        public static RestClient CreateDefaultRestRequest(string baseUrl)
         {
-            IList<RestRequest> listRestRequest = new List<RestRequest>();
+            RestClient restClient = new RestClient(baseUrl)
+            {
+                CookieContainer = new CookieContainer()
+            };
+
+            return restClient;
+        }
+
+        public static RestRequest SetConfigure(string configFile)
+        {
+            RestRequest restRequest = new RestRequest();
 
             using (StreamReader stream = new StreamReader(configFile))
             {
@@ -28,16 +39,13 @@
 
                 Har har = se.Deserialize<Har>(reader);
 
-                foreach (var entry in har.Log.Entries)
-                {
-                    var configuredRequest = entry.Request;
-                    var restRequest = SetNewRequest(configuredRequest);
+                var entry = har.Log.Entries.First();
 
-                    listRestRequest.Add(restRequest);
-                }
+                var configuredRequest = entry.Request;
+                restRequest = SetNewRequest(configuredRequest);
             }
 
-            return listRestRequest;
+            return restRequest;
         }
 
         private static RestRequest SetNewRequest(Request configuredRequest)
@@ -48,6 +56,7 @@
             SetUrl(restRequest, configuredRequest);
             AddHeaders(restRequest, configuredRequest);
             AddQueryParameters(restRequest, configuredRequest);
+            AddCookies(restRequest, configuredRequest);
             AddParams(restRequest, configuredRequest);
 
             return restRequest;
@@ -55,28 +64,48 @@
 
         private static void AddHeaders(RestRequest restRequest, Request request)
         {
-            foreach (var head in request.Headers)
+            if (request.Headers != null)
             {
-                if (!IgnoredHeaderString.Contains(head.Name))
+                foreach (var head in request.Headers)
                 {
-                    restRequest.AddHeader(ConvertValue(head.Name), ConvertValue(head.Value.ToString()));
+                    if (!IgnoredHeaderString.Contains(head.Name))
+                    {
+                        restRequest.AddHeader(ConvertValue(head.Name), ConvertValue(head.Value.ToString()));
+                    }
                 }
             }
         }
 
         private static void AddQueryParameters(RestRequest restRequest, Request request)
         {
-            foreach (var queryString in request.QueryString)
+            if (request.QueryString != null)
             {
-                restRequest.AddQueryParameter(ConvertValue(queryString.Name), ConvertValue(queryString.Value.ToString()));
+                foreach (var queryString in request.QueryString)
+                {
+                    restRequest.AddQueryParameter(ConvertValue(queryString.Name), ConvertValue(queryString.Value.ToString()));
+                }
+            }
+        }
+
+        private static void AddCookies(RestRequest restRequest, Request request)
+        {
+            if (request.Cookies != null)
+            {
+                foreach (var cookie in request.Cookies)
+                {
+                    restRequest.AddCookie(ConvertValue(cookie.Name), ConvertValue(cookie.Value.ToString()));
+                }
             }
         }
 
         private static void AddParams(RestRequest restRequest, Request request)
         {
-            foreach (var parameter in request.PostData.Params)
+            if (request.PostData != null)
             {
-                restRequest.AddParameter(ConvertValue(parameter.Name), ConvertValue(parameter.Value.ToString()));
+                foreach (var parameter in request.PostData.Params)
+                {
+                    restRequest.AddParameter(ConvertValue(parameter.Name), ConvertValue(parameter.Value.ToString()));
+                }
             }
         }
 

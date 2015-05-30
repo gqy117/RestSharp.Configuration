@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -14,7 +15,23 @@
     [TestFixture]
     public class ConfigureHelperTest
     {
-        private const string MockHarFile = "NZVisa.har";
+        private const string NZVisaHar = "NZVisa.har";
+
+        [Test]
+        public void CreateDefaultRestClient_ShouldReturnRestClientWithCookieContainer()
+        {
+            // Arrange
+            string baseUrl = "http://www.anyurl.com";
+            
+            // Act
+            RestClient actual = ConfigureHelper.CreateDefaultRestRequest(baseUrl);
+
+            // Assert
+            var expected = new RestClient(baseUrl);
+            expected.CookieContainer = new CookieContainer();
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
 
         [Test]
         public void SetConfigure_ShouldReturnRestRequestWithAddedParameters()
@@ -22,7 +39,7 @@
             // Arrange
 
             // Act
-            IList<RestRequest> actual = ConfigureHelper.SetConfigure(MockHarFile);
+            RestRequest actual = ConfigureHelper.SetConfigure(NZVisaHar);
 
             // Assert
             RestRequest expected = new RestRequest();
@@ -55,26 +72,18 @@
             expected.AddParameter("ctl00$CPH$btnDOB", "提交");
             expected.AddParameter("__EVENTVALIDATION", "ZwWQzZhIU5bnUvHoAA6eGo22rvmMQLtFslZ435qF8gTk64gjpYH9a/L6/HZB24CV1c5qOVE/+pPNntYYrHLzgalrFmDOrkyQ");
 
-            actual.FirstOrDefault().ShouldBeEquivalentTo(expected);
+            actual.ShouldBeEquivalentTo(expected);
         }
 
         [Test]
-        public void SetConfigure_ShouldReturnRestRequestWhichCanGetResponseFromTheInternet_WhenTheInputedRestRequestIsNotNull()
+        public void SetConfigure_ShouldNotThrowException_WhenThereIsNoPostDataCookieQueryStringHeaders()
         {
             // Arrange
-            RestClient restClient = new RestClient("https://www.visaservices.co.in");
 
             // Act
-            IList<RestRequest> request = ConfigureHelper.SetConfigure(MockHarFile);
-            var actual = restClient.Execute(request.First());
+            RestRequest actual = ConfigureHelper.SetConfigure("NoPostDataCookieQueryStringHeaders.har");
 
             // Assert
-            using (StreamReader sr = new StreamReader("NZVisa.html", Encoding.UTF8))
-            {
-                var expectedHtmlString = sr.ReadToEnd();
-
-                actual.Content.ShouldBeEquivalentTo(expectedHtmlString);
-            }
         }
     }
 }
