@@ -20,6 +20,7 @@ restClient.Execute(request.First());
 ## 1. RestSharp.Configuration ##
 
 (1) The method SetConfigure creates a **RestRequest** based on a **har** file.
+
 (2) Use StyleCop to keep code clean.
 
 ## 2. RestSharp.Configuration.Test ##
