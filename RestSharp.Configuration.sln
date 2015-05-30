@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestSharp.Configuration", "RestSharp.Configuration\RestSharp.Configuration.csproj", "{162EEF25-B50D-401E-840E-BF5852B6D2AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestSharp.Configuration.Test", "RestSharp.Configuration.Test\RestSharp.Configuration.Test.csproj", "{F03E4515-DBC5-4312-8767-1FC1FE9E4FD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{162EEF25-B50D-401E-840E-BF5852B6D2AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162EEF25-B50D-401E-840E-BF5852B6D2AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162EEF25-B50D-401E-840E-BF5852B6D2AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162EEF25-B50D-401E-840E-BF5852B6D2AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F03E4515-DBC5-4312-8767-1FC1FE9E4FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F03E4515-DBC5-4312-8767-1FC1FE9E4FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F03E4515-DBC5-4312-8767-1FC1FE9E4FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F03E4515-DBC5-4312-8767-1FC1FE9E4FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
