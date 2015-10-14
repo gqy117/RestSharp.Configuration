@@ -42,13 +42,13 @@
                 var entry = har.Log.Entries.First();
 
                 var configuredRequest = entry.Request;
-                restRequest = this.SetNewRequest(configuredRequest);
+                restRequest = this.SetRequest(configuredRequest);
             }
 
             return restRequest;
         }
 
-        private RestRequest SetNewRequest(Request configuredRequest)
+        private RestRequest SetRequest(Request configuredRequest)
         {
             var restRequest = new RestRequest();
 
