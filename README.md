@@ -6,14 +6,16 @@ So that we can login to some web pages without writing **Request.AddParameter()*
 # Steps: #
 
 ## 1. Get a Har file  
-Save a real request from Chrome as HAR format.
+Save a real request from Chrome as **HAR** format.
 
 ## 2. Write the following code ##
-RestClient restClient = new RestClient("https://www.yourUrl.com");
+ConfigureHelper configureHelper = new ConfigureHelper();
 
-IList<RestRequest> request = ConfigureHelper.SetConfigure(MockHarFile);
+RestClient restClient = configureHelper.CreateDefaultRestClient("https://www.yourUrl.com");
 
-restClient.Execute(request.First());
+RestRequest request = configureHelper.SetConfigure(MockHarFile);
+
+restClient.Execute(request);
 
 # Project Introduction: #
 
@@ -21,7 +23,7 @@ restClient.Execute(request.First());
 
 (1) The method SetConfigure creates a **RestRequest** based on a **har** file.
 
-(2) Use StyleCop to keep code clean.
+(2) Use **StyleCop** to keep code clean.
 
 ## 2. RestSharp.Configuration.Test ##
 (1) Use **NUnit** to test.
