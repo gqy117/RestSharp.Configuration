@@ -18,7 +18,7 @@
             "Connection"
         };
 
-        public RestClient CreateDefaultRestRequest(string baseUrl)
+        public RestClient CreateDefaultRestClient(string baseUrl)
         {
             RestClient restClient = new RestClient(baseUrl)
             {

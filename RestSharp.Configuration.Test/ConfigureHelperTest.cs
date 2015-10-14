@@ -32,7 +32,7 @@
             string baseUrl = "http://www.anyurl.com";
             
             // Act
-            RestClient actual = this.ConfigureHelper.CreateDefaultRestRequest(baseUrl);
+            RestClient actual = this.ConfigureHelper.CreateDefaultRestClient(baseUrl);
 
             // Assert
             var expected = new RestClient(baseUrl);

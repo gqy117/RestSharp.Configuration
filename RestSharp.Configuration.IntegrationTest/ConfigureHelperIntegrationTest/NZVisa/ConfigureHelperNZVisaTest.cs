@@ -50,7 +50,7 @@
         public void SetConfigure_ShouldReturnRestRequestWhichCanGetResponseFromTheInternet_WhenTheInputedRestRequestIsNotNull()
         {
             // Arrange
-            var restClient = this.ConfigureHelper.CreateDefaultRestRequest(this.BaseUrl);
+            var restClient = this.ConfigureHelper.CreateDefaultRestClient(this.BaseUrl);
 
             // Act
             RestRequest request = this.ConfigureHelper.SetConfigureByHar(this.MockHarFile);
