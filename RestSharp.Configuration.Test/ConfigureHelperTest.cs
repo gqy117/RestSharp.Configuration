@@ -17,6 +17,14 @@
     {
         private const string NZVisaHar = "NZVisa.har";
 
+        private ConfigureHelper ConfigureHelper { get; set; }
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            this.ConfigureHelper = new ConfigureHelper();
+        }
+
         [Test]
         public void CreateDefaultRestClient_ShouldReturnRestClientWithCookieContainer()
         {
@@ -24,7 +32,7 @@
             string baseUrl = "http://www.anyurl.com";
             
             // Act
-            RestClient actual = ConfigureHelper.CreateDefaultRestRequest(baseUrl);
+            RestClient actual = this.ConfigureHelper.CreateDefaultRestRequest(baseUrl);
 
             // Assert
             var expected = new RestClient(baseUrl);
@@ -39,7 +47,7 @@
             // Arrange
 
             // Act
-            RestRequest actual = ConfigureHelper.SetConfigure(NZVisaHar);
+            RestRequest actual = this.ConfigureHelper.SetConfigureByHar(NZVisaHar);
 
             // Assert
             RestRequest expected = new RestRequest();
@@ -81,7 +89,7 @@
             // Arrange
 
             // Act
-            RestRequest actual = ConfigureHelper.SetConfigure("NoPostDataCookieQueryStringHeaders.har");
+            RestRequest actual = this.ConfigureHelper.SetConfigureByHar("NoPostDataCookieQueryStringHeaders.har");
 
             // Assert
         }

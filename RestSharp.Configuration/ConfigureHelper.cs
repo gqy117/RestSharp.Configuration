@@ -18,7 +18,7 @@
             "Connection"
         };
 
-        public static RestClient CreateDefaultRestRequest(string baseUrl)
+        public RestClient CreateDefaultRestRequest(string baseUrl)
         {
             RestClient restClient = new RestClient(baseUrl)
             {
@@ -28,11 +28,11 @@
             return restClient;
         }
 
-        public static RestRequest SetConfigure(string configFile)
+        public RestRequest SetConfigureByHar(string harConfigFile)
         {
             RestRequest restRequest = new RestRequest();
 
-            using (StreamReader stream = new StreamReader(configFile))
+            using (StreamReader stream = new StreamReader(harConfigFile))
             {
                 JsonTextReader reader = new JsonTextReader(stream);
                 JsonSerializer se = new JsonSerializer();
@@ -42,27 +42,27 @@
                 var entry = har.Log.Entries.First();
 
                 var configuredRequest = entry.Request;
-                restRequest = SetNewRequest(configuredRequest);
+                restRequest = this.SetRequest(configuredRequest);
             }
 
             return restRequest;
         }
 
-        private static RestRequest SetNewRequest(Request configuredRequest)
+        private RestRequest SetRequest(Request configuredRequest)
         {
             var restRequest = new RestRequest();
 
-            SetMethod(restRequest, configuredRequest);
-            SetUrl(restRequest, configuredRequest);
-            AddHeaders(restRequest, configuredRequest);
-            AddQueryParameters(restRequest, configuredRequest);
-            AddCookies(restRequest, configuredRequest);
-            AddParams(restRequest, configuredRequest);
+            this.SetMethod(restRequest, configuredRequest);
+            this.SetUrl(restRequest, configuredRequest);
+            this.AddHeaders(restRequest, configuredRequest);
+            this.AddQueryParameters(restRequest, configuredRequest);
+            this.AddCookies(restRequest, configuredRequest);
+            this.AddParams(restRequest, configuredRequest);
 
             return restRequest;
         }
 
-        private static void AddHeaders(RestRequest restRequest, Request request)
+        private void AddHeaders(RestRequest restRequest, Request request)
         {
             if (request.Headers != null)
             {
@@ -70,46 +70,46 @@
                 {
                     if (!IgnoredHeaderString.Contains(head.Name))
                     {
-                        restRequest.AddHeader(ConvertValue(head.Name), ConvertValue(head.Value.ToString()));
+                        restRequest.AddHeader(this.UrlDecode(head.Name), this.UrlDecode(head.Value.ToString()));
                     }
                 }
             }
         }
 
-        private static void AddQueryParameters(RestRequest restRequest, Request request)
+        private void AddQueryParameters(RestRequest restRequest, Request request)
         {
             if (request.QueryString != null)
             {
                 foreach (var queryString in request.QueryString)
                 {
-                    restRequest.AddQueryParameter(ConvertValue(queryString.Name), ConvertValue(queryString.Value.ToString()));
+                    restRequest.AddQueryParameter(this.UrlDecode(queryString.Name), this.UrlDecode(queryString.Value.ToString()));
                 }
             }
         }
 
-        private static void AddCookies(RestRequest restRequest, Request request)
+        private void AddCookies(RestRequest restRequest, Request request)
         {
             if (request.Cookies != null)
             {
                 foreach (var cookie in request.Cookies)
                 {
-                    restRequest.AddCookie(ConvertValue(cookie.Name), ConvertValue(cookie.Value.ToString()));
+                    restRequest.AddCookie(this.UrlDecode(cookie.Name), this.UrlDecode(cookie.Value.ToString()));
                 }
             }
         }
 
-        private static void AddParams(RestRequest restRequest, Request request)
+        private void AddParams(RestRequest restRequest, Request request)
         {
             if (request.PostData != null)
             {
                 foreach (var parameter in request.PostData.Params)
                 {
-                    restRequest.AddParameter(ConvertValue(parameter.Name), ConvertValue(parameter.Value.ToString()));
+                    restRequest.AddParameter(this.UrlDecode(parameter.Name), this.UrlDecode(parameter.Value.ToString()));
                 }
             }
         }
 
-        private static void SetUrl(RestRequest restRequest, Request request)
+        private void SetUrl(RestRequest restRequest, Request request)
         {
             Uri uri = new Uri(request.Url);
 
@@ -118,12 +118,12 @@
             restRequest.Resource = removedFirstSlash;
         }
 
-        private static void SetMethod(RestRequest restRequest, Request request)
+        private void SetMethod(RestRequest restRequest, Request request)
         {
             restRequest.Method = (Method)Enum.Parse(typeof(Method), request.Method, true);
         }
 
-        private static string ConvertValue(string value)
+        private string UrlDecode(string value)
         {
             return HttpUtility.UrlDecode(value);
         }

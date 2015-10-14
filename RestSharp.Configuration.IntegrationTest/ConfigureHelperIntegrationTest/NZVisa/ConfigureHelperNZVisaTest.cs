@@ -36,16 +36,24 @@
             get { return this.CurrentFolder + "NZVisa.html"; }
         }
 
+        private ConfigureHelper ConfigureHelper { get; set; }
+
         #endregion
+
+        [TestFixtureSetUp]
+        public void Init()
+        {
+            this.ConfigureHelper = new ConfigureHelper();
+        }
 
         [Test]
         public void SetConfigure_ShouldReturnRestRequestWhichCanGetResponseFromTheInternet_WhenTheInputedRestRequestIsNotNull()
         {
             // Arrange
-            var restClient = ConfigureHelper.CreateDefaultRestRequest(this.BaseUrl);
+            var restClient = this.ConfigureHelper.CreateDefaultRestRequest(this.BaseUrl);
 
             // Act
-            RestRequest request = ConfigureHelper.SetConfigure(this.MockHarFile);
+            RestRequest request = this.ConfigureHelper.SetConfigureByHar(this.MockHarFile);
             var actual = restClient.Execute(request);
 
             // Assert
