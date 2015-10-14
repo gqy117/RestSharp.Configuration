@@ -13,9 +13,9 @@ ConfigureHelper configureHelper = new ConfigureHelper();
 
 RestClient restClient = configureHelper.CreateDefaultRestClient("https://www.yourUrl.com");
 
-RestRequest request = configureHelper.SetConfigure("your har file path");
+RestRequest request = configureHelper.SetConfigure("**your har file path**");
 
-restClient.Execute(request);
+var result = restClient.Execute(request);
 
 # Project Introduction: #
 
