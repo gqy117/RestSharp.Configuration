@@ -21,7 +21,7 @@ var result = restClient.Execute(request);
 
 ## 1. RestSharp.Configuration ##
 
-(1) The method SetConfigure creates a **RestRequest** based on a **har** file.
+(1) The method **SetConfigureByHar** creates a **RestRequest** based on a **har** file.
 
 (2) Use **StyleCop** to keep code clean.
 
